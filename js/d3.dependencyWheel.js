@@ -36,6 +36,7 @@ d3.chart.dependencyWheel = function(options) {
   var width = 700;
   var margin = 150;
   var padding = 0.02;
+  var fill = null;
 
   function chart(selection) {
     selection.each(function(data) {
@@ -64,7 +65,7 @@ d3.chart.dependencyWheel = function(options) {
         .innerRadius(radius)
         .outerRadius(radius + 20);
 
-      var fill = function(d) {
+      fill = fill || function(d) {
         if (d.index === 0) return '#ccc';
         return "hsl(" + parseInt(((packageNames[d.index][0].charCodeAt() - 97) / 26) * 360, 10) + ",90%,70%)";
       };
@@ -169,5 +170,11 @@ d3.chart.dependencyWheel = function(options) {
     return chart;
   };
 
-  return chart;
+  chart.fill = function(fct) {
+        if (!arguments.length) return fill;
+        fill = fct;
+        return chart;
+    };
+
+    return chart;
 };

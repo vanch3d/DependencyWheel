@@ -88,7 +88,7 @@ d3.chart.dependencyWheel = function (options) {
 
             // the default tooltip for the arc (requires 'description' key in data.attributes)
             tooltip = tooltip || function(d,i) {
-                return attributes[i].description || "";
+                return (attributes[i] && attributes[i].description) || "";
             };
 
             // Returns an event handler for fading a given chord group.

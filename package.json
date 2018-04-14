@@ -1,15 +1,15 @@
 {
     "name": "d3-dependency-wheel",
-    "version": "1.1.0",
+    "version": "1.2.1",
     "description": "Dependency Wheel",
     "main": "js/d3.dependencyWheel.js",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/fzaninotto/DependencyWheel.git"
+        "url": "git+https://github.com/vanch3d/DependencyWheel.git"
     },
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/fzaninotto/DependencyWheel/issues"
+        "url": "https://github.com/vanch3d/DependencyWheel/issues"
     },
-    "homepage": "https://github.com/fzaninotto/DependencyWheel#readme"
+    "homepage": "https://github.com/vanch3d/DependencyWheel#readme"
 }

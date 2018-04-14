@@ -80,7 +80,13 @@ var data = {
   packageNames: ['Main', 'A', 'B'],
   matrix: [[0, 1, 1], // Main depends on A and B
            [0, 0, 1], // A depends on B
-           [0, 0, 0]] // B doesn't depend on A or Main
+           [0, 0, 0]], // B doesn't depend on A or Main
+  attributes: [
+    { id: 'Main', description: 'this is the main package' },
+    { id: 'A', description: 'this is the A package' },
+    { id: 'B', description: 'this is the B package' },
+  ]
+
 };
 </pre>
     <p>For more information about the matrix format, check the <a href="https://github.com/mbostock/d3/wiki/Chord-Layout">d3 Chord Layout</a> documentation.</p>
@@ -94,9 +100,14 @@ d3.select('#chart_placeholder')
     <p>DependencyWheel follows the <a href="http://bost.ocks.org/mike/chart/">d3.js reusable charts</a> pattern to let you customize the chart at will:</p>
 <pre>
 var chart = d3.chart.dependencyWheel()
-  .width(700)    // also used for height, since the wheel is in a a square
-  .margin(150)   // used to display package names
-  .padding(.02); // separating groups in the wheel
+  .width(700)       // also used for height, since the wheel is in a a square
+  .margin(150)      // used to display package names
+  .padding(.02);    // separating groups in the wheel
+  .fill(function(d){
+      return (d.index === 0) ? '#ccc' : "red" ; })
+  .tooltip(function(d){
+      return "this is a tooltip" ; });
+
 </pre>
 
     <h2>Sharing your DependencyWheels</h2>

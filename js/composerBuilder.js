@@ -27,6 +27,7 @@ var buildMatrixFromComposerJsonAndLock = function(composerjson, composerlock) {
 
   var indexByName = {};
   var packageNames = {};
+  var attributes = {};
   var matrix = [];
   var n = 0;
   var replaces = {};
@@ -54,6 +55,7 @@ var buildMatrixFromComposerJsonAndLock = function(composerjson, composerlock) {
     packageName = p.name;
     if (!(packageName in indexByName)) {
       packageNames[n] = packageName;
+      attributes[n] = p;
       indexByName[packageName] = n++;
     }
   });
@@ -85,6 +87,7 @@ var buildMatrixFromComposerJsonAndLock = function(composerjson, composerlock) {
 
   return {
     matrix: matrix,
-    packageNames: packageNames
+    packageNames: packageNames,
+      attributes: attributes
   }
 };

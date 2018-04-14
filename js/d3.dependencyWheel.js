@@ -39,8 +39,9 @@ d3.chart = d3.chart || {};
  *                  .tooltip(function(d){ return "this is a tooltip" ; });
  *
  * @author François Zaninotto
+ * @author vanch3d <nicolas.github@calques3d.org>
  * @license MIT
- * @see https://github.com/fzaninotto/DependencyWheel for complete source and license
+ * @see https://github.com/vanch3d/DependencyWheel for complete source and license
  */
 d3.chart.dependencyWheel = function (options) {
 

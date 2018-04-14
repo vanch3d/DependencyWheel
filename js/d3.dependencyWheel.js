@@ -9,6 +9,7 @@ d3.chart = d3.chart || {};
  *   .datum({
  *      packageNames: [the name of the packages in the matrix],
  *      matrix: [your dependency matrix]
+ *      attributes: [optional, an array of key/attribute pairs for each package]
  *   })
  *   .call(chart);
  *
@@ -20,12 +21,22 @@ d3.chart = d3.chart || {};
  *   packageNames: ['Main', 'A', 'B'],
  *   matrix: [[0, 1, 1], // Main depends on A and B
  *            [0, 0, 1], // A depends on B
- *            [0, 0, 0]] // B doesn't depend on A or Main
+ *            [0, 0, 0]], // B doesn't depend on A or Main
+ *   attributes: [
+ *      { id: 'Main', description: 'this is the main package' },
+ *      { id: 'A', description: 'this is the A package' },
+ *      { id: 'B', description: 'this is the B package' },
+ *   ]
  * };
  *
  * // You can customize the chart width, margin (used to display package names),
  * // and padding (separating groups in the wheel)
- * var chart = d3.chart.dependencyWheel().width(700).margin(150).padding(.02);
+ * var chart = d3.chart.dependencyWheel()
+ *                  .width(700)
+ *                  .margin(150)
+ *                  .padding(.02)
+ *                  .fill(function(d){ return (d.index === 0) ? '#ccc' : "red" ; })
+ *                  .tooltip(function(d){ return "this is a tooltip" ; });
  *
  * @author François Zaninotto
  * @license MIT
@@ -37,12 +48,14 @@ d3.chart.dependencyWheel = function (options) {
     var margin = 150;
     var padding = 0.02;
     var fill = null;
+    var tooltip = null;
 
     function chart(selection) {
         selection.each(function (data) {
 
             var matrix = data.matrix;
             var packageNames = data.packageNames;
+            var attributes = data.attributes || [];
 
             var radius = width / 2 - margin;
 
@@ -66,9 +79,15 @@ d3.chart.dependencyWheel = function (options) {
                 .innerRadius(radius)
                 .outerRadius(radius + 20);
 
+            // the default color selector for filling the chords & ars
             fill = fill || function (d) {
                 if (d.index === 0) return '#ccc';
                 return "hsl(" + parseInt("" + ((packageNames[d.index][0].charCodeAt(0) - 97) / 26) * 360, 10) + ",90%,70%)";
+            };
+
+            // the default tooltip for the arc (requires 'description' key in data.attributes)
+            tooltip = tooltip || function(d,i) {
+                return attributes[i].description || "";
             };
 
             // Returns an event handler for fading a given chord group.
@@ -123,7 +142,10 @@ d3.chart.dependencyWheel = function (options) {
                 .attr("d", arc)
                 .style("cursor", "pointer")
                 .on("mouseover", fade(0.1))
-                .on("mouseout", fade(1));
+                .on("mouseout", fade(1))
+                .append("svg:title")
+                    .text(tooltip);
+
 
             g.append("svg:text")
                 .each(function (d) {
@@ -143,7 +165,10 @@ d3.chart.dependencyWheel = function (options) {
                     return packageNames[d.index];
                 })
                 .on("mouseover", fade(0.1))
-                .on("mouseout", fade(1));
+                .on("mouseout", fade(1))
+                .append("svg:title")
+                    .text(tooltip);
+
 
             gEnter.selectAll("path.chord")
                 .data(chordResult)
@@ -163,27 +188,62 @@ d3.chart.dependencyWheel = function (options) {
         });
     }
 
+    /**
+     * Set/Get the width of the chart
+     * @param value
+     * @return {*}
+     */
     chart.width = function (value) {
         if (!arguments.length) return width;
         width = value;
         return chart;
     };
 
+    /**
+     * Set/Get the internal margin of the chart
+     * @param value
+     * @return {*}
+     */
     chart.margin = function (value) {
         if (!arguments.length) return margin;
         margin = value;
         return chart;
     };
 
+    /**
+     * Set/Get the internal padding of the chart
+     * @param value
+     * @return {*}
+     */
     chart.padding = function (value) {
         if (!arguments.length) return padding;
         padding = value;
         return chart;
     };
 
+    /**
+     * Set the color filling for the chord and arcs of the chart
+     * @param fct   A function
+     * @return {chart}
+     */
     chart.fill = function (fct) {
-        if (!arguments.length) return fill;
-        fill = fct;
+        if (fct instanceof Function)
+            fill = fct;
+        else
+            throw new TypeError("The fill parameter is not a valid function");
+        return chart;
+    };
+
+    /**
+     * Set the tooltip for the arcs and labels of the chart
+     * @param fct   A function
+     * @return {chart}
+     */
+    chart.tooltip = function (fct) {
+        if (fct instanceof Function)
+            tooltip = fct;
+        else
+            throw new TypeError("The tooltip parameter is not a valid function");
         return chart;
     };
 

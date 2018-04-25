@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dependency Wheel</title>
+</head>
+<body>
+
+<div id="chart" style="width: 100%;">
+</div>
+<div id="legend"></div>
+
+
+</body>
+<script src="../node_modules/d3v4/build/d3.min.js"></script>
+<script src="../dist/d3-dependencyWheel.js"></script>
+<script>
+    (function () {
+        let chart = d3.dependencyWheel()
+            .width(960)
+            .margin(50);
+
+        console.log(chart.width());
+
+        let randoms = function(l,m){
+            l = l || 4;
+            m = m || 10;
+            return Array.from({length: l}, () => Math.floor(Math.random() * m));
+
+        };
+
+        // generate the chart from the dataset in the selected element
+        d3.select('#chart')
+            .datum({
+                matrix: [randoms(4,5),randoms(5),randoms(7),randoms()],
+                packageNames: ["a","b","c","d"],
+                attributes: []
+            })
+            .call(chart);
+
+    })();
+</script>
+</html>

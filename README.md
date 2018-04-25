@@ -1,14 +1,38 @@
-Dependency Wheel
-================
+# d3-dependencyWheel
 
-This experiment visualizes package dependencies using an interactive disc. Each disc section represents a dependency, and links between arcs materialize these dependencies. All rendering is done client-side, in JavaScript. Built with <a href="https://github.com/mbostock/d3">d3.js</a>, published with the MIT open-source license.
+A d3-module (version 4) implementation of a dependency graph.
 
-Interact with DependencyWheels, see examples, and build your own at [http://fzaninotto.github.com/DependencyWheel](http://fzaninotto.github.com/DependencyWheel).
+The module is based on the original [Dependency Wheel](https://github.com/fzaninotto/DependencyWheel) 
+and has been refactored to be more compliant with current patterns for d3 modules, 
+see Mike Bostock's [guidelines](https://bost.ocks.org/mike/d3-plugin/). 
 
-![The Dependency Wheel of the sylius/sylius project](http://redotheweb.com/DependencyWheel/img/dependency_chord.gif)
+## Installing
+
+If you use NPM, `npm install d3-calendar`. Otherwise, download the [latest release](https://github.com/vanch3d/d3-calendar/releases/latest). 
+
+## Usage
+
+Make sure to include both d3 (version 4, not included) and the module, in this order.
+```html
+<script src="d3.min.js"></script>
+<script src="/dist/d3-dependencyWheel.min.js"></script>
+```
+
+Check the [examples](https://github.com/vanch3d/DependencyWheel/tree/master/examples) 
+for mode detailed instructions.
+
+## API Reference
+
+<a href="#d3_dependencyWheel" name="d3_dependencyWheel">#</a> d3.<b>dependencyWheel</b>()
+
+Constructs a new dependency graph
+
+> TO DO
 
 ## Changelog 
 
+- v2.0.0
+  - refactored project for consistency with d3v4 modules
 - v1.2.0
   - added customisation for chart's color and tooltip
   - added optional attributes for packages in data structure

@@ -3,9 +3,11 @@
  * @param composerJson
  * @return {{matrix: Array, packageNames: string[], attributes: Object[]}}
  */
-buildMatrixFromComposerJson = function (composerJson) {
+export function buildMatrixFromComposerJson(composerJson) {
+
     /** @namespace composerJson.require */
     let packageNames = Object.keys(composerJson.require);
+
     /** @namespace composerJson.name */
     packageNames.unshift(composerJson.name);
 
@@ -16,17 +18,20 @@ buildMatrixFromComposerJson = function (composerJson) {
     // only the first element depends on others
     for (let i = 1; i < n; i++) {
         matrix[0][i] = 1 + increment;
-        matrix[i] = Array.apply(null, new Array(n)).map(Number.prototype.valueOf, 0);
-        matrix[i][0] = 2 ;
+        //matrix[i] = Array.apply(null, new Array(n)).map(Number.prototype.valueOf, 0);
+        matrix[i] = [...new Array(n).map(Number.prototype.valueOf, 0)];
+        matrix[i][0] = 2;
         increment += 0.001;
     }
 
     return {
-        matrix: matrix,
-        packageNames: packageNames,
-        attributes: packageNames.map( function(e){ return { description: e}; })
+        matrix,
+        packageNames,
+        attributes: packageNames.map(function(e){
+            return {description: e};
+        })
     }
-};
+}
 
 /**
  *
@@ -34,10 +39,10 @@ buildMatrixFromComposerJson = function (composerJson) {
  * @param composerLock
  * @return {{matrix: Array, packageNames: Array, attributes: Object[]}}
  */
-let buildMatrixFromComposerJsonAndLock = function (composerJson, composerLock) {
+export function buildMatrixFromComposerJsonAndLock(composerJson, composerLock) {
 
     /** @namespace composerLock.packages */
-    let packages = composerLock.packages;
+    let {packages} = composerLock;
     composerJson.isMain = true;
     packages.unshift(composerJson);
 
@@ -52,7 +57,8 @@ let buildMatrixFromComposerJsonAndLock = function (composerJson, composerLock) {
     packages.forEach(function (p) {
         if (!p.replace) return;
         for (let replaced in p.replace) {
-            replaces[replaced] = p.name;
+            if (Object.prototype.hasOwnProperty.call(p.replace, replaced))
+                replaces[replaced] = p.name;
         }
     });
 
@@ -85,7 +91,8 @@ let buildMatrixFromComposerJsonAndLock = function (composerJson, composerLock) {
             for (let i = -1; ++i < n;) row[i] = 0;
         }
         for (let packageName in p.require) {
-            row[indexByName[packageName]]++;
+            if (Object.prototype.hasOwnProperty.call(p.require, packageName))
+                row[indexByName[packageName]]++;
         }
     });
 
@@ -102,8 +109,8 @@ let buildMatrixFromComposerJsonAndLock = function (composerJson, composerLock) {
     });
 
     return {
-        matrix: matrix,
-        packageNames: packageNames,
-        attributes: attributes
+        matrix,
+        packageNames,
+        attributes
     }
-};
+}

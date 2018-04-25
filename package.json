@@ -1,6 +1,6 @@
 {
     "name": "d3-dependencyWheel",
-    "version": "1.2.1",
+    "version": "2.0.0",
     "description": "A d3-module implementing a dependecy graph based on chords",
     "keywords": [
         "d3",

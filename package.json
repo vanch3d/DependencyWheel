@@ -1,15 +1,51 @@
 {
-    "name": "d3-dependency-wheel",
-    "version": "1.2.1",
-    "description": "Dependency Wheel",
-    "main": "js/d3.dependencyWheel.js",
+    "name": "d3-dependencyWheel",
+    "version": "2.0.0",
+    "description": "A d3-module implementing a dependecy graph based on chords",
+    "keywords": [
+        "d3",
+        "d3-module",
+        "dependencies",
+        "chord"
+    ],
+    "author": {
+        "name": "vanch3d",
+        "url": "https://github.com/vanch3d"
+    },
+    "contributors": [
+        {
+            "name": "Francois Zaninotto",
+            "url": "https://github.com/fzaninotto"
+        },
+        {
+            "name": "Mike Bostock",
+            "url": "https://github.com/mbostock"
+        }
+    ],
+    "license": "MIT",
+    "main": "dist/d3-dependencyWheel.js",
+    "jsnext:main": "index",
+    "homepage": "https://github.com/vanch3d/DependencyWheel",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/vanch3d/DependencyWheel.git"
+        "url": "https://github.com/vanch3d/DependencyWheel.git"
     },
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/vanch3d/DependencyWheel/issues"
+    "scripts": {
+        "pretest": "rimraf dist && mkdirp dist && rollup -c",
+        "test": "tape test/**/*-test.js && eslint index.js src",
+        "prepublish": "npm run test && uglifyjs dist/d3-dependencyWheel.js -c -m -o dist/d3-dependencyWheel.min.js",
+        "postpublish": ""
     },
-    "homepage": "https://github.com/vanch3d/DependencyWheel#readme"
+    "devDependencies": {
+        "eslint": "^4.19.1",
+        "mkdirp": "^0.5.1",
+        "package-preamble": "^0.1.0",
+        "rimraf": "^2.6.2",
+        "rollup": "^0.58.1",
+        "tape": "^4.9.0",
+        "uglify-js-es6": "^2.8.9"
+    },
+    "dependencies": {
+        "d3v4": "^4.2.2"
+    }
 }
